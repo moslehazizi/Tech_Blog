@@ -3,7 +3,7 @@ CREATE TABLE "users" (
   "hashed_password" varchar NOT NULL,
   "full_name" varchar NOT NULL,
   "email" varchar UNIQUE NOT NULL,
-  "image" bytea NOT NULL,
+  "user_image" bytea NOT NULL,
   "created_at" timestamp NOT NULL DEFAULT (now())
 );
 
@@ -14,7 +14,7 @@ CREATE TABLE "categories" (
 
 CREATE TABLE "posts" (
   "id" BIGSERIAL PRIMARY KEY,
-  "image" bytea NOT NULL,
+  "post_image" bytea NOT NULL,
   "title" varchar NOT NULL,
   "post_category" bigint NOT NULL,
   "content" text NOT NULL,

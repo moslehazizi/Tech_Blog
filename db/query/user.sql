@@ -1,31 +1,28 @@
 -- name: CreateUser :one
 INSERT INTO users (
   username,
-  first_name,
-  last_name,
+  hashed_password,
+  full_name,
   email,
-  
+  user_image
 ) VALUES (
-  $1, $2
+  $1, $2, $3, $4, $5
 ) RETURNING *;
 
--- name: GetCategory :one
-SELECT * FROM categories
-WHERE id = $1 LIMIT 1;
+-- name: GetUser :one
+SELECT * FROM users
+WHERE username = $1 LIMIT 1;
 
--- name: ListCategories :many
-SELECT * FROM categories
-ORDER BY id
-LIMIT $1
-OFFSET $2;
-
--- name: UpdateCategory :one
-UPDATE categories
-  set category_name = $2,
-      section_name = $3
-WHERE id = $1
+-- name: UpdateUser :one
+UPDATE users
+  set username = $2,
+      full_name = $3,
+      hashed_password = $4,
+      email = $5,
+      user_image = $6
+WHERE username = $1
 RETURNING *;
 
--- name: DeleteCategory :exec
-DELETE FROM categories
-WHERE id = $1;
+-- name: DeleteUser :exec
+DELETE FROM users
+WHERE username = $1;
