@@ -1,9 +1,10 @@
 CREATE TABLE "users" (
   "username" varchar PRIMARY KEY,
-  "first_name" varchar NOT NULL,
-  "last_name" varchar NOT NULL,
-  "email" varchar NOT NULL,
-  "image" bytea NOT NULL
+  "hashed_password" varchar NOT NULL,
+  "full_name" varchar NOT NULL,
+  "email" varchar UNIQUE NOT NULL,
+  "image" bytea NOT NULL,
+  "created_at" timestamp NOT NULL DEFAULT (now())
 );
 
 CREATE TABLE "categories" (
