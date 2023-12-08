@@ -72,7 +72,7 @@ func TestDeleteRrview(t *testing.T) {
 }
 
 
-func TestListReview(t *testing.T) {
+func TestListReviews(t *testing.T) {
 	category := createRandomCategory(t)
 	user := createRandomUser(t)
 	post := createRandomPost(t, category)

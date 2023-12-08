@@ -20,6 +20,15 @@ ORDER BY id
 LIMIT $1
 OFFSET $2;
 
+-- name: ListPostsByCategory :many
+SELECT * FROM posts
+WHERE 
+  post_category = $1
+ORDER BY id
+LIMIT $2
+OFFSET $3;
+
+
 -- name: UpdatePost :one
 UPDATE posts
   set post_image = $2,

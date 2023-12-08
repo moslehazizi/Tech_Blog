@@ -55,7 +55,7 @@ func TestGetPost(t *testing.T) {
 	require.Equal(t, post_1.LikeNumber, post_2.LikeNumber)
 }
 
-func TestListPost(t *testing.T) {
+func TestListPosts(t *testing.T) {
 	category := createRandomCategory(t)
 	for i := 0; i < 10; i++ {
 		createRandomPost(t, category)
@@ -72,6 +72,26 @@ func TestListPost(t *testing.T) {
 
 	for _, post := range posts {		
 		require.NotEmpty(t, post)
+	}
+}
+
+func TestListPostsByCategory(t *testing.T) {
+	category := createRandomCategory(t)
+	for i:=0; i<10; i++{
+		createRandomPost(t, category)
+	}
+	arg := ListPostsByCategoryParams{
+		PostCategory: category.ID,
+		Limit: 5,
+		Offset: 5,
+	}
+	posts, err := testQueries.ListPostsByCategory(context.Background(), arg)
+
+	require.NoError(t, err)
+	
+	for _, post := range posts {
+		require.NotEmpty(t, post)
+		require.Equal(t, category.ID, post.PostCategory)
 	}
 }
 

@@ -22,6 +22,7 @@ type Querier interface {
 	GetReview(ctx context.Context, id int64) (Review, error)
 	GetUser(ctx context.Context, username string) (User, error)
 	ListPosts(ctx context.Context, arg ListPostsParams) ([]Post, error)
+	ListPostsByCategory(ctx context.Context, arg ListPostsByCategoryParams) ([]Post, error)
 	ListReviews(ctx context.Context, arg ListReviewsParams) ([]Review, error)
 	UpdateCategory(ctx context.Context, arg UpdateCategoryParams) (Category, error)
 	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)

@@ -129,6 +129,53 @@ func (q *Queries) ListPosts(ctx context.Context, arg ListPostsParams) ([]Post, e
 	return items, nil
 }
 
+const listPostsByCategory = `-- name: ListPostsByCategory :many
+SELECT id, post_image, title, post_category, content, time_for_read, like_number, created_at FROM posts
+WHERE 
+  post_category = $1
+ORDER BY id
+LIMIT $2
+OFFSET $3
+`
+
+type ListPostsByCategoryParams struct {
+	PostCategory int64 `json:"post_category"`
+	Limit        int32 `json:"limit"`
+	Offset       int32 `json:"offset"`
+}
+
+func (q *Queries) ListPostsByCategory(ctx context.Context, arg ListPostsByCategoryParams) ([]Post, error) {
+	rows, err := q.db.QueryContext(ctx, listPostsByCategory, arg.PostCategory, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Post{}
+	for rows.Next() {
+		var i Post
+		if err := rows.Scan(
+			&i.ID,
+			&i.PostImage,
+			&i.Title,
+			&i.PostCategory,
+			&i.Content,
+			&i.TimeForRead,
+			&i.LikeNumber,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const updatePost = `-- name: UpdatePost :one
 UPDATE posts
   set post_image = $2,
