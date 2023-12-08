@@ -17,7 +17,7 @@ INSERT INTO users (
   email,
   user_image
 ) VALUES (
-  $1, $2, $3, $4, $5
+  $1, $2, $3, $4 , $5
 ) RETURNING username, hashed_password, full_name, email, user_image, created_at
 `
 
@@ -83,28 +83,25 @@ UPDATE users
   set username = $2,
       full_name = $3,
       hashed_password = $4,
-      email = $5,
-      user_image = $6
-WHERE username = $1
+      user_image = $5
+WHERE email = $1
 RETURNING username, hashed_password, full_name, email, user_image, created_at
 `
 
 type UpdateUserParams struct {
+	Email          string `json:"email"`
 	Username       string `json:"username"`
-	Username_2     string `json:"username_2"`
 	FullName       string `json:"full_name"`
 	HashedPassword string `json:"hashed_password"`
-	Email          string `json:"email"`
 	UserImage      []byte `json:"user_image"`
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
 	row := q.db.QueryRowContext(ctx, updateUser,
+		arg.Email,
 		arg.Username,
-		arg.Username_2,
 		arg.FullName,
 		arg.HashedPassword,
-		arg.Email,
 		arg.UserImage,
 	)
 	var i User

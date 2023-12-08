@@ -58,7 +58,28 @@ func (q *Queries) DeleteReview(ctx context.Context, id int64) error {
 	return err
 }
 
-const listGoods = `-- name: ListGoods :many
+const getReview = `-- name: GetReview :one
+SELECT id, reviewer, review_content, post, star_degree, like_number, unlike_number, created_at FROM reviews
+WHERE id = $1 LIMIT 1
+`
+
+func (q *Queries) GetReview(ctx context.Context, id int64) (Review, error) {
+	row := q.db.QueryRowContext(ctx, getReview, id)
+	var i Review
+	err := row.Scan(
+		&i.ID,
+		&i.Reviewer,
+		&i.ReviewContent,
+		&i.Post,
+		&i.StarDegree,
+		&i.LikeNumber,
+		&i.UnlikeNumber,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const listReviews = `-- name: ListReviews :many
 SELECT id, reviewer, review_content, post, star_degree, like_number, unlike_number, created_at FROM reviews
 WHERE 
     post = $1
@@ -67,14 +88,14 @@ LIMIT $2
 OFFSET $3
 `
 
-type ListGoodsParams struct {
+type ListReviewsParams struct {
 	Post   int64 `json:"post"`
 	Limit  int32 `json:"limit"`
 	Offset int32 `json:"offset"`
 }
 
-func (q *Queries) ListGoods(ctx context.Context, arg ListGoodsParams) ([]Review, error) {
-	rows, err := q.db.QueryContext(ctx, listGoods, arg.Post, arg.Limit, arg.Offset)
+func (q *Queries) ListReviews(ctx context.Context, arg ListReviewsParams) ([]Review, error) {
+	rows, err := q.db.QueryContext(ctx, listReviews, arg.Post, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}

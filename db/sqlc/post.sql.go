@@ -11,13 +11,14 @@ import (
 
 const createPost = `-- name: CreatePost :one
 INSERT INTO posts (
-    post_image,
-    title,
-    post_category,
-    content,
-    time_for_read
+  post_image,
+  title,
+  post_category,
+  content,
+  time_for_read,
+  like_number
 ) VALUES (
-  $1, $2, $3, $4, $5
+  $1, $2, $3, $4, $5, $6
 ) RETURNING id, post_image, title, post_category, content, time_for_read, like_number, created_at
 `
 
@@ -27,6 +28,7 @@ type CreatePostParams struct {
 	PostCategory int64  `json:"post_category"`
 	Content      string `json:"content"`
 	TimeForRead  int32  `json:"time_for_read"`
+	LikeNumber   int64  `json:"like_number"`
 }
 
 func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, error) {
@@ -36,6 +38,7 @@ func (q *Queries) CreatePost(ctx context.Context, arg CreatePostParams) (Post, e
 		arg.PostCategory,
 		arg.Content,
 		arg.TimeForRead,
+		arg.LikeNumber,
 	)
 	var i Post
 	err := row.Scan(

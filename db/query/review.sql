@@ -8,7 +8,12 @@ INSERT INTO reviews (
   $1, $2, $3, $4
 ) RETURNING *;
 
--- name: ListGoods :many
+-- name: GetReview :one
+SELECT * FROM reviews
+WHERE id = $1 LIMIT 1;
+
+
+-- name: ListReviews :many
 SELECT * FROM reviews
 WHERE 
     post = $1

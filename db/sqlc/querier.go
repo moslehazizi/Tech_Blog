@@ -19,9 +19,10 @@ type Querier interface {
 	DeleteUser(ctx context.Context, username string) error
 	GetCategory(ctx context.Context, id int64) (Category, error)
 	GetPost(ctx context.Context, id int64) (Post, error)
+	GetReview(ctx context.Context, id int64) (Review, error)
 	GetUser(ctx context.Context, username string) (User, error)
-	ListGoods(ctx context.Context, arg ListGoodsParams) ([]Review, error)
 	ListPosts(ctx context.Context, arg ListPostsParams) ([]Post, error)
+	ListReviews(ctx context.Context, arg ListReviewsParams) ([]Review, error)
 	UpdateCategory(ctx context.Context, arg UpdateCategoryParams) (Category, error)
 	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)

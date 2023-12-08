@@ -6,7 +6,7 @@ INSERT INTO users (
   email,
   user_image
 ) VALUES (
-  $1, $2, $3, $4, $5
+  $1, $2, $3, $4 , $5
 ) RETURNING *;
 
 -- name: GetUser :one
@@ -18,9 +18,8 @@ UPDATE users
   set username = $2,
       full_name = $3,
       hashed_password = $4,
-      email = $5,
-      user_image = $6
-WHERE username = $1
+      user_image = $5
+WHERE email = $1
 RETURNING *;
 
 -- name: DeleteUser :exec

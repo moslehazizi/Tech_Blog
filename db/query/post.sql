@@ -1,12 +1,13 @@
 -- name: CreatePost :one
 INSERT INTO posts (
-    post_image,
-    title,
-    post_category,
-    content,
-    time_for_read
+  post_image,
+  title,
+  post_category,
+  content,
+  time_for_read,
+  like_number
 ) VALUES (
-  $1, $2, $3, $4, $5
+  $1, $2, $3, $4, $5, $6
 ) RETURNING *;
 
 -- name: GetPost :one

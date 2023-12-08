@@ -24,7 +24,7 @@ CREATE TABLE "posts" (
 );
 
 CREATE TABLE "reviews" (
-  "id" bigint PRIMARY KEY,
+  "id" BIGSERIAL PRIMARY KEY,
   "reviewer" varchar NOT NULL,
   "review_content" text NOT NULL,
   "post" bigint NOT NULL,
