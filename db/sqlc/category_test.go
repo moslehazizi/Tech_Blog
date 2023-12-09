@@ -60,3 +60,23 @@ func TestDeleteCategory(t *testing.T) {
 	require.Empty(t, category_2)
 
 }
+
+func TestListCategories(t *testing.T) {
+	for i:=0; i<10; i++ {
+		createRandomCategory(t)
+	}
+
+	arg := ListCategoriesParams{
+		Limit: 5,
+		Offset: 5,
+	}
+
+	categories, err := testQueries.ListCategories(context.Background(), arg)
+
+	require.NoError(t, err)
+	require.Len(t, categories, 5)
+
+	for _, category := range categories{
+		require.NotEmpty(t, category)
+	}
+}

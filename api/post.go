@@ -63,6 +63,7 @@ func (server *Server) getPost(c *gin.Context) {
 	posts, err_2 := server.store.ListPosts(c, arg)
 	if err_2 != nil {
 		c.JSON(http.StatusInternalServerError, errorResponse(err_2))
+		return
 	}
 
 
@@ -74,9 +75,22 @@ func (server *Server) getPost(c *gin.Context) {
 	reviews, err_3 := server.store.ListReviews(c, arg_R)
 	if err_3 != nil {
 		c.JSON(http.StatusInternalServerError, errorResponse(err_3))
+		return
+	}
+
+	arg_C := db.ListCategoriesParams{
+		Limit: 1000,
+		Offset: 0,
+	}
+
+	categories, err_4 := server.store.ListCategories(c, arg_C)
+
+	if err_4 != nil {
+		c.JSON(http.StatusInternalServerError, errorResponse(err_4))
 	}
 
 	c.JSON(http.StatusOK, post)
 	c.JSON(http.StatusOK, posts[post.ID:post.ID+3])
 	c.JSON(http.StatusOK, reviews)
+	c.JSON(http.StatusOK, categories)
 }
